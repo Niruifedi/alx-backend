@@ -1,9 +1,6 @@
 import csv
 import math
 from typing import List
-"""
-Class Server
-"""
 
 
 def index_range(page, page_size):
