@@ -1,3 +1,3 @@
-# pagination
+# Pagination
 
-pagination of rest api request and response
+Pagination of REST API request and response
