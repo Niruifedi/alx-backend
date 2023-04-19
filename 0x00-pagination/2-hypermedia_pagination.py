@@ -53,24 +53,31 @@ class Server:
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
         """
-        get hypermedia pagination return a dictionary containing the folowing
-        Page size
-        Page number
-        Data
-        Next page
-        Prev page
-        Total pages
+        get_hyper that takes the same arguments (and defaults) as get_page
+        and returns a dictionary containing the following key-value pairs:
+        page_size: the length of the returned dataset page: the current page
+        number data: the dataset (equivalent to return from previous task)
+        next_page: number of the next page, None if no next page
+        prev_page: number of the previous page, None if no previous page
+        total_pages: the total number of pages in the dataset
         """
-        assert isinstance(page, int)
-        assert isinstance(page_size, int)
-        assert page > 0
-        assert page_size > 0
+        assert isinstance(page, int) and isinstance(page_size, int)
+        assert page > 0 and page_size > 0
         start, end = index_range(page, page_size)
         data = self.dataset()[start:end]
         total_pages = math.ceil(len(self.dataset()) / page_size)
+        if page >= total_pages:
+            next_page = None
+        else:
+            next_page = page + 1
+        if page <= 1:
+            prev_page = None
+        else:
+            prev_page = page - 1
+
         return {
                 "page_size": page_size,
                 "page": page, "data": data,
-                "next_page": page + 1,
-                "prev_page": page - 1,
+                "next_page": next_page,
+                "prev_page": prev_page,
                 "total_pages": total_pages}
