@@ -12,7 +12,7 @@ class FIFOCache(BaseCaching):
     """
     def __init__(self):
         super().__init__()
-    
+
     def put(self, key, item):
         """
         Mehtod adds an item to the cache and pops the first item off the cache
@@ -22,7 +22,7 @@ class FIFOCache(BaseCaching):
         if len(self.cache_data) > BaseCaching.MAX_ITEMS:
             print("DISCARD: {}".format(list(self.cache_data.keys())[0]))
             del self.cache_data[list(self.cache_data.keys())[0]]
-    
+
     def get(self, key):
         """
         get an item in the cache
