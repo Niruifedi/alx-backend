@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """
 LRU Caching
 """
@@ -8,6 +7,9 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LRUCache(BaseCaching):
+    """
+    Class LRU inherits from BaseCaching
+    """
     def __init__(self):
         super().__init__()
         self.cache_data_list = []
