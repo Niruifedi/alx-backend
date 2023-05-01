@@ -9,6 +9,6 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world() -> str:
     """
-    ffunction returns a basic html file
+    function returns a basic html file
     """
     return render_template("0-index.html")
