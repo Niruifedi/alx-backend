@@ -37,7 +37,7 @@ def index() -> str:
 @babel.localeselector
 def get_locale() -> str:
     """
-    fuction to determine the best match with our supported languages
+    function to determine the best match with our supported languages
     """
     if request.args.get("locale"):
         return request.args.get("locale")
