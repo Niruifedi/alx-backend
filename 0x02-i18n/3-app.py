@@ -30,7 +30,7 @@ def index() -> str:
     """
     function returns a basic html file
     """
-    return  render_template("3-index.html")
+    return render_template("3-index.html")
 
 
 @babel.localeselector
