@@ -24,17 +24,18 @@ class Config(object):
 
 app.config.from_object(Config)
 
-@babel.localeselector
-def get_locale() -> str:
-    """
-    fuction to determine the best match with our supported languages
-    """
-    return request.accept_languages.best_match(app.config["LANGUAGES"])
-
 
 @app.route('/')
 def index() -> str:
     """
     function returns a basic html file
     """
-    return  render_template(_("3-index.html"))
+    return  render_template("3-index.html")
+
+
+@babel.localeselector
+def get_locale() -> str:
+    """
+    fuction to determine the best match with our supported languages
+    """
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
