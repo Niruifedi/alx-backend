@@ -40,7 +40,7 @@ def index() -> str:
     """
     function returns a basic html file
     """
-    return render_template("4-index.html")
+    return render_template("5-index.html")
 
 
 @babel.localeselector
@@ -53,12 +53,13 @@ def get_locale() -> str:
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
-def get_user(login_as) -> dict | None:
+def get_user(login_as):
     """
     function that returns a user dictionary or None if the ID cannot be found
     """
-    if login_as and int(login_as) in users:
-        return users[int(login_as)]
+    userId = request.args.get('login_as', None)
+    if userId:
+        return users.get(int(userId))
     return None
 
 
@@ -74,4 +75,4 @@ def before_request():
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
-    app.run(host=host, port=port)
+    app.run(host=host, port=port, debug=True)
