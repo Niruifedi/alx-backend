@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 """
-Basic flask app
+Flask app
 """
-from os import getenv
-from flask_babel import Babel
 from flask import (
     Flask,
-    g,
     render_template,
-    request)
-app = Flask(__name__)
-babel = Babel(app)
+    request,
+    g
+)
+from flask_babel import Babel
 
 
 users = {
@@ -23,54 +21,56 @@ users = {
 
 class Config(object):
     """
-    class config to set the languages and default time zone
+    Configuration for Babel
     """
-    LANGUAGES = ['en', 'fr']
-    BABEL_DEFAULT_LOCALE = 'en'
-    BABEL_DEFAULT_TIMEZONE = 'UTC'
+    LANGUAGES = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE = "en"
+    BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
+app = Flask(__name__)
 app.config.from_object(Config)
+babel = Babel(app)
 
 
 def get_user():
     """
-    function that returns a user dictionary or None if the ID cannot be found
+    Returns a user dictionary or None if ID value can't be found
+    or if 'login_as' URL parameter was not found
     """
-    uid = request.args.get('login_as', None)
-    if id is not None and int(uid) in users.keys():
-        return users.get(int(uid))
+    id = request.args.get('login_as', None)
+    if id is not None and int(id) in users.keys():
+        return users.get(int(id))
     return None
-
-
-@app.route('/')
-def index() -> str:
-    """
-    function returns a basic html file
-    """
-    return render_template("5-index.html")
-
-
-@babel.localeselector
-def get_locale() -> str:
-    """
-    function to determine the best match with our supported languages
-    """
-    if request.args.get("locale"):
-        return request.args.get("locale")
-    return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
 @app.before_request
 def before_request():
     """
-    function to find a user if any, and set it as a global on flask.g.user
+    Add user to flask.g if user is found
     """
     user = get_user()
     g.user = user
 
 
+@babel.localeselector
+def get_locale():
+    """
+    Select and return best language match based on supported languages
+    """
+    loc = request.args.get('locale')
+    if loc in app.config['LANGUAGES']:
+        return loc
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+@app.route('/', strict_slashes=False)
+def index() -> str:
+    """
+    Handles / route
+    """
+    return render_template('5-index.html')
+
+
 if __name__ == "__main__":
-    host = getenv("API_HOST", "0.0.0.0")
-    port = getenv("API_PORT", "5000")
-    app.run(host=host, port=port, debug=True)
+    app.run(port="5000", host="0.0.0.0", debug=True)
