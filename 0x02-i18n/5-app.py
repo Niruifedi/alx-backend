@@ -3,9 +3,7 @@
 Basic flask app
 """
 from os import getenv
-from flask_babel import (
-    Babel,
-    _)
+from flask_babel import Babel
 from flask import (
     Flask,
     g,
@@ -35,6 +33,16 @@ class Config(object):
 app.config.from_object(Config)
 
 
+def get_user():
+    """
+    function that returns a user dictionary or None if the ID cannot be found
+    """
+    uid = request.args.get('login_as', None)
+    if id is not None and int(uid) in users.keys():
+        return users.get(int(uid))
+    return None
+
+
 @app.route('/')
 def index() -> str:
     """
@@ -53,24 +61,14 @@ def get_locale() -> str:
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
-def get_user(login_as):
-    """
-    function that returns a user dictionary or None if the ID cannot be found
-    """
-    userId = request.args.get('login_as', None)
-    if userId:
-        return users.get(int(userId))
-    return None
-
-
 @app.before_request
 def before_request():
     """
     function to find a user if any, and set it as a global on flask.g.user
     """
-    user = get_user(request.args.get("login_as"))
-    if user:
-        g.user = user
+    user = get_user()
+    g.user = user
+
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
