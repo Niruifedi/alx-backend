@@ -6,8 +6,8 @@ const queue = createQueue();
 
 // object for job data
 const data = {
-    phoneNumber: '8392405984',
-    message: 'This is data is to successfully test the job',
+    phoneNumber: '4153518780',
+    message: 'This is the code to verify your account',
 }
 
 //create a queue named push notification and saves it with save()
